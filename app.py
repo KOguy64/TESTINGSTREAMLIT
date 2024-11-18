@@ -77,7 +77,7 @@ if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
-        bg.paste(bg, (0,0), bg)
+        bg.paste(im, (0,0), im)
         # buffered = BytesIO()
         # im.save(buffered, format="PNG")
         # img_data = buffered.getvalue()
