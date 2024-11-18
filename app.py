@@ -88,6 +88,7 @@ if (st.button("Analyse")):
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
         output  = tf.keras.utils.img_to_array(bg)
+        output = tf.image.rgb_to_grayscale(output)
         output = tf.image.resize(output, [32, 32])
         output = output / 255.0
         
