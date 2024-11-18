@@ -87,16 +87,16 @@ if (st.button("Analyse")):
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
-        bg.save(testpath)
         
-        # buffered = BytesIO()
-        # im.save(buffered, format="PNG")
-        # img_data = buffered.getvalue()
-        # try:
-        #     # some strings <-> bytes conversions necessary here
-        #     b64 = base64.b64encode(img_data.encode()).decode()
-        # except AttributeError:
-        #     b64 = base64.b64encode(img_data).decode()
+        buffered = BytesIO()
+        bg.save(testpath, format="PNG")
+        img_data = buffered.getvalue()
+        try:
+            # some strings <-> bytes conversions necessary here
+            b64 = base64.b64encode(img_data.encode()).decode()
+        except AttributeError:
+            b64 = base64.b64encode(img_data).decode()
+        
         st.image(load_image(testpath)) #DISPLAY FULL IMAGE
     st.caption("I did something")
 else:
