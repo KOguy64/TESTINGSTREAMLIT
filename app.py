@@ -6,6 +6,7 @@ import time
 import uuid
 from io import BytesIO
 from pathlib import Path
+import tensorflow as tf
 
 import numpy as np
 import pandas as pd
@@ -13,6 +14,12 @@ import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from svgpathtools import parse_path
+
+def load_image(image):
+    image = tf.image.decode_png(image, channels = 3)
+    image = tf.image.resize(image, [32, 32])
+    image = image / 255.0
+    return image
 
 if "button_id" not in st.session_state:
         st.session_state["button_id"] = ""
@@ -78,6 +85,7 @@ if (st.button("Analyse")):
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
+        
         # buffered = BytesIO()
         # im.save(buffered, format="PNG")
         # img_data = buffered.getvalue()
@@ -86,7 +94,7 @@ if (st.button("Analyse")):
         #     b64 = base64.b64encode(img_data.encode()).decode()
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
-        st.image(bg)
+        st.image(load_image(bg)) #DISPLAY FULL IMAGE
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
