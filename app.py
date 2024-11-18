@@ -20,13 +20,9 @@ if "button_id" not in st.session_state:
         
 st.title(
     """
-OPTIMAL AC PLACEMENT AI
+Optimal AC Placement AI :snowflake:
 """
 )
-try:
-    Path("tmp/").mkdir()
-except FileExistsError:
-    pass
 
 # Regular deletion of tmp files
 # Hopefully callback makes this better
@@ -42,36 +38,6 @@ if st.session_state["button_id"] == "":
         "\d+", "", str(uuid.uuid4()).replace("-", "")
     )
 
-button_id = st.session_state["button_id"]
-file_path = f"tmp/{button_id}.png"
-
-custom_css = f""" 
-    <style>
-        #{button_id} {{
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgb(255, 255, 255);
-            color: rgb(38, 39, 48);
-            padding: .25rem .75rem;
-            position: relative;
-            text-decoration: none;
-            border-radius: 4px;
-            border-width: 1px;
-            border-style: solid;
-            border-color: rgb(230, 234, 241);
-            border-image: initial;
-        }} 
-        #{button_id}:hover {{
-            border-color: rgb(246, 51, 102);
-            color: rgb(246, 51, 102);
-        }}
-        #{button_id}:active {{
-            box-shadow: none;
-            background-color: rgb(246, 51, 102);
-            color: white;
-            }}
-    </style> """
 model = tf.saved_model.load("model")
 
 bg = Image.open("test.png")
