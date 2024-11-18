@@ -88,8 +88,8 @@ if (st.button("Analyse")):
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
         output  = tf.keras.utils.img_to_array(bg)
-        #image = tf.image.resize(output, [32, 32])
-        #image = image / 255.0
+        output = tf.image.resize(output, [32, 32])
+        output = output / 255.0
         st.image(output)
     st.caption("I did something")
 else:
