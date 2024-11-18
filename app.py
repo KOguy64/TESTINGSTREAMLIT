@@ -15,7 +15,8 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from svgpathtools import parse_path
 
-def load_image(image):
+def load_image(image_path):
+    image = tf.io.read_file(directory + image_path)
     image = tf.image.decode_png(image, channels = 3)
     image = tf.image.resize(image, [32, 32])
     image = image / 255.0
@@ -78,13 +79,15 @@ custom_css = f"""
             color: white;
             }}
     </style> """
-bg = Image.open("test.png")
+testpath = "test.png"
+bg = Image.open(testpath)
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
 if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
+        bg.save(testpath)
         
         # buffered = BytesIO()
         # im.save(buffered, format="PNG")
@@ -94,7 +97,7 @@ if (st.button("Analyse")):
         #     b64 = base64.b64encode(img_data.encode()).decode()
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
-        st.image(load_image(bg)) #DISPLAY FULL IMAGE
+        st.image(load_image(testpath)) #DISPLAY FULL IMAGE
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
