@@ -17,8 +17,7 @@ from svgpathtools import parse_path
 
 st.markdown(
     """
-Realtime update is disabled for this demo. 
-Press the 'Download' button at the bottom of canvas to update exported image.
+This is room position detection thingy
 """
 )
 try:
@@ -71,23 +70,23 @@ custom_css = f"""
             }}
     </style> """
 
-data = st_canvas(update_streamlit=False, key="png_export")
-if data is not None and data.image_data is not None:
-    img_data = data.image_data
-    im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
-    im.save(file_path, "PNG")
+# data = st_canvas(update_streamlit=False, key="png_export")
+# if data is not None and data.image_data is not None:
+#     img_data = data.image_data
+#     im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
+#     im.save(file_path, "PNG")
 
-    buffered = BytesIO()
-    im.save(buffered, format="PNG")
-    img_data = buffered.getvalue()
-    try:
-        # some strings <-> bytes conversions necessary here
-        b64 = base64.b64encode(img_data.encode()).decode()
-    except AttributeError:
-        b64 = base64.b64encode(img_data).decode()
+#     buffered = BytesIO()
+#     im.save(buffered, format="PNG")
+#     img_data = buffered.getvalue()
+#     try:
+#         # some strings <-> bytes conversions necessary here
+#         b64 = base64.b64encode(img_data.encode()).decode()
+#     except AttributeError:
+#         b64 = base64.b64encode(img_data).decode()
 
-    dl_link = (
-        custom_css
-        + f'<a download="{file_path}" id="{button_id}" href="data:file/txt;base64,{b64}">Export PNG</a><br></br>'
-    )
-    st.markdown(dl_link, unsafe_allow_html=True)
+#     dl_link = (
+#         custom_css
+#         + f'<a download="{file_path}" id="{button_id}" href="data:file/txt;base64,{b64}">Export PNG</a><br></br>'
+#     )
+#     st.markdown(dl_link, unsafe_allow_html=True)
