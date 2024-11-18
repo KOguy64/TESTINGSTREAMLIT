@@ -71,22 +71,22 @@ custom_css = f"""
             color: white;
             }}
     </style> """
-data = st_canvas(update_streamlit=False, key="png_export", height=480, width=480, background_image=Image.open("test.png"))
+bg = Image.open("test.png")
+data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
 if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
-        im.save(file_path, "PNG")
-
-        buffered = BytesIO()
-        im.save(buffered, format="PNG")
-        img_data = buffered.getvalue()
-        try:
-            # some strings <-> bytes conversions necessary here
-            b64 = base64.b64encode(img_data.encode()).decode()
-        except AttributeError:
-            b64 = base64.b64encode(img_data).decode()
-        st.image(file_path)
+        bg.paste(im, (0,0), bg)
+        # buffered = BytesIO()
+        # im.save(buffered, format="PNG")
+        # img_data = buffered.getvalue()
+        # try:
+        #     # some strings <-> bytes conversions necessary here
+        #     b64 = base64.b64encode(img_data.encode()).decode()
+        # except AttributeError:
+        #     b64 = base64.b64encode(img_data).decode()
+        st.image(bg)
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
