@@ -43,7 +43,7 @@ model = tf.saved_model.load("model")
 bg = Image.open("test.png")
 bg = bg.convert("RGB")
 
-data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=Image.open("test2.png"))
+data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=Image.open("test.png"))
 st.header("Draw in your room (Color in the obstacles)")
 if (st.button("Analyse", type="primary")):
     if data is not None and data.image_data is not None:
@@ -84,6 +84,6 @@ if (st.button("Analyse", type="primary")):
         bg = Image.open("test.png")
         star = Image.open("cross.png")
         bg.paste(star, (int(answer[0][1] * 15) - 7, int(answer[0][1] * 15) - 7), star)
-        bg.save("test2.png", "PNG")
+        st.image(bg)
 else:
     st.markdown("Press the Analyze button!")
