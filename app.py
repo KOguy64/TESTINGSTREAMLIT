@@ -78,7 +78,7 @@ bg = Image.open("test.png")
 bg = bg.convert("RGB")
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
 st.header("Draw in your room (Color in the obstacles)")
-if (st.button("Analyse")):
+if (st.button("Analyse", type="primary")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
@@ -110,8 +110,8 @@ if (st.button("Analyse")):
         #st.caption(list(output.numpy()))
 
         answer = model.serve(output).numpy()
-        st.markdown(f"Optimal Position:")
-        st.markdown(f"X: {answer[0][0]}")
-        st.markdown(f"Y: {answer[0][1]}")
+        st.header(f"Optimal Position:")
+        st.header(f"X: {answer[0][0]}")
+        st.header(f"Y: {answer[0][1]}")
 else:
     st.markdown("Press the Analyze button!")
