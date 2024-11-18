@@ -18,9 +18,9 @@ import tensorflow as tf
 if "button_id" not in st.session_state:
         st.session_state["button_id"] = ""
         
-st.markdown(
+st.title(
     """
-This is room position detection thingy
+OPTIMAL AC PLACEMENT AI
 """
 )
 try:
@@ -77,6 +77,7 @@ model = tf.saved_model.load("model")
 bg = Image.open("test.png")
 bg = bg.convert("RGB")
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
+st.header("Draw in your room (Color in the obstacles)")
 if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
@@ -110,6 +111,7 @@ if (st.button("Analyse")):
 
         answer = model.serve(output).numpy()
         st.markdown(f"Optimal Position:")
-        st.markdown(f"X: {answer[0][0]}, Y: {answer[0][1]}")
+        st.markdown(f"X: {answer[0][0]}")
+        st.markdown(f"Y: {answer[0][1]}")
 else:
-    st.markdown("Draw in your room (Color in the obstacles), and press the Analyze button!")
+    st.markdown("Press the Analyze button!")
