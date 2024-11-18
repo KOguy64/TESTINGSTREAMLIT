@@ -82,7 +82,7 @@ if (st.button("Analyse")):
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
-        st.image(bg)
+        #st.image(bg)
         bg.save("out.png", "PNG")
 
         # buffered = BytesIO()
@@ -108,6 +108,8 @@ if (st.button("Analyse")):
         #st.caption(output)
         #st.caption(list(output.numpy()))
 
-        st.caption(model.serve(output))
+        answerX, answerY = model.serve(output).numpy()
+        st.markdown(f"Optimal Position:")
+        st.markdown(f"X: {answerX}, Y: {answerY}")
 else:
-    st.caption("Didn't do something")
+    st.markdown("Draw in your room (Color in the obstacles), and press the Analyze button!")
