@@ -13,6 +13,7 @@ import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from svgpathtools import parse_path
+import tensorflow as tf
 
 if "button_id" not in st.session_state:
         st.session_state["button_id"] = ""
@@ -86,7 +87,10 @@ if (st.button("Analyse")):
         #     b64 = base64.b64encode(img_data.encode()).decode()
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
-        st.image(bg)
+        output  = tf.keras.utils.img_to_array(bg)
+        image = tf.image.resize(output, [32, 32])
+        image = image / 255.0
+        st.image(image)
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
