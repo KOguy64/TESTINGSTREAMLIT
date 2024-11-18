@@ -81,7 +81,7 @@ if (st.button("Analyse")):
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
         st.image(bg)
-        im.save("test.png", "PNG")
+        bg.save("test.png", "PNG")
 
         # buffered = BytesIO()
         # im.save(buffered, format="PNG")
