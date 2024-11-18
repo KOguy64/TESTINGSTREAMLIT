@@ -43,33 +43,33 @@ if st.session_state["button_id"] == "":
 button_id = st.session_state["button_id"]
 file_path = f"tmp/{button_id}.png"
 
-# custom_css = f""" 
-#     <style>
-#         #{button_id} {{
-#             display: inline-flex;
-#             align-items: center;
-#             justify-content: center;
-#             background-color: rgb(255, 255, 255);
-#             color: rgb(38, 39, 48);
-#             padding: .25rem .75rem;
-#             position: relative;
-#             text-decoration: none;
-#             border-radius: 4px;
-#             border-width: 1px;
-#             border-style: solid;
-#             border-color: rgb(230, 234, 241);
-#             border-image: initial;
-#         }} 
-#         #{button_id}:hover {{
-#             border-color: rgb(246, 51, 102);
-#             color: rgb(246, 51, 102);
-#         }}
-#         #{button_id}:active {{
-#             box-shadow: none;
-#             background-color: rgb(246, 51, 102);
-#             color: white;
-#             }}
-#     </style> """
+custom_css = f""" 
+    <style>
+        #{button_id} {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 255, 255);
+            color: rgb(38, 39, 48);
+            padding: .25rem .75rem;
+            position: relative;
+            text-decoration: none;
+            border-radius: 4px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(230, 234, 241);
+            border-image: initial;
+        }} 
+        #{button_id}:hover {{
+            border-color: rgb(246, 51, 102);
+            color: rgb(246, 51, 102);
+        }}
+        #{button_id}:active {{
+            box-shadow: none;
+            background-color: rgb(246, 51, 102);
+            color: white;
+            }}
+    </style> """
 
 data = st_canvas(update_streamlit=False, key="png_export")
 if data is not None and data.image_data is not None:
