@@ -72,7 +72,7 @@ custom_css = f"""
             }}
     </style> """
 
-data = st_canvas(update_streamlit=False, key="png_export", background_image=Image.open("test.png"))
+data = st_canvas(update_streamlit=False, key="png_export", height=480, width=480, background_image=Image.open("test.png"))
 if data is not None and data.image_data is not None:
     img_data = data.image_data
     im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
