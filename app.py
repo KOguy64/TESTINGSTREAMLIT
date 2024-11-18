@@ -90,7 +90,7 @@ if (st.button("Analyse")):
         output  = tf.keras.utils.img_to_array(bg)
         #image = tf.image.resize(output, [32, 32])
         #image = image / 255.0
-        st.image(image)
+        st.image(output)
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
