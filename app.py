@@ -73,7 +73,7 @@ custom_css = f"""
             }}
     </style> """
 bg = Image.open("test.png")
-bg = bg.convert("IMG")
+bg = bg.convert("RBG")
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
 if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
