@@ -16,7 +16,7 @@ from streamlit_drawable_canvas import st_canvas
 from svgpathtools import parse_path
 
 def load_image(image_path):
-    image = tf.io.read_file(directory + image_path)
+    image = tf.io.read_file(image_path)
     image = tf.image.decode_png(image, channels = 3)
     image = tf.image.resize(image, [32, 32])
     image = image / 255.0
