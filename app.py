@@ -78,12 +78,12 @@ if (st.button("Analyse", type="primary")):
         #st.caption(output)
         #st.caption(list(output.numpy()))
 
-        answerX, answerY = model.serve(output).numpy()[0]
+        answer = model.serve(output).numpy()
         st.header(f"Optimal Position:")
-        st.header(f"X: {answerX}")
-        st.header(f"Y: {answerY}")
+        st.header(f"X: {answer[0][0]}")
+        st.header(f"Y: {answer[0][1]}")
 
         star = Image.open("cross.png")
-        bg2.paste(star, (answerX - 7, answerY - 7), star)
+        bg2.paste(star, (int(answer[0][0]) - 7, int(answer[0][1] - 7)))
 else:
     st.markdown("Press the Analyze button!")
