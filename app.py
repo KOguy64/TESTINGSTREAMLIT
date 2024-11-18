@@ -72,7 +72,7 @@ custom_css = f"""
             }}
     </style> """
 
-if (st.button("Analyse", type = "Primary")):
+if (st.button("Analyse")):
     data = st_canvas(update_streamlit=False, key="png_export", height=480, width=480, background_image=Image.open("test.png"))
     if data is not None and data.image_data is not None:
         img_data = data.image_data
