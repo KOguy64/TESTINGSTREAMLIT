@@ -94,7 +94,7 @@ if (st.button("Analyse")):
         output = tf.cast(output * 255, tf.uint8)
         output = tf.image.resize(output, [32, 32])
         output = output / 255.0
-        
+        st.caption(output)
         st.caption(list(output.numpy()))
 else:
     st.caption("Didn't do something")
