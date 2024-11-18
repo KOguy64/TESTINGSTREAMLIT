@@ -81,7 +81,7 @@ if (st.button("Analyse")):
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
         st.image(bg)
-        bg.save("test.png", "PNG")
+        bg.save("out.png", "PNG")
 
         # buffered = BytesIO()
         # im.save(buffered, format="PNG")
@@ -92,7 +92,7 @@ if (st.button("Analyse")):
         # except AttributeError:
         #     b64 = base64.b64encode(img_data).decode()
 
-        output = tf.io.read_file("test.png")
+        output = tf.io.read_file("out.png")
         output = tf.image.decode_png(output, channels = 1)
 
         #output  = tf.keras.utils.img_to_array(bg)
