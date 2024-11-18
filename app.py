@@ -17,38 +17,77 @@ from svgpathtools import parse_path
 
 st.markdown(
     """
-Drawable Canvas doesn't provided out-of-the-box image annotation capabilities, but we can hack something with session state,
-by mapping a drawing fill color to a label.
-
-Annotate pedestrians, cars and traffic lights with this one, with any color/label you want 
-(though in a real app you should rather provide your own label and fills :smile:).
-
-If you really want advanced image annotation capabilities, you'd better check [Streamlit Label Studio](https://discuss.streamlit.io/t/new-component-streamlit-labelstudio-allows-you-to-embed-the-label-studio-annotation-frontend-into-your-application/9524)
+Realtime update is disabled for this demo. 
+Press the 'Download' button at the bottom of canvas to update exported image.
 """
 )
-bg_image = Image.open("test.png")
-label_color = (
-    st.sidebar.color_picker("Annotation color: ", "#EA1010") + "77"
-)  # for alpha from 00 to FF
-label = st.sidebar.text_input("Label", "Default")
-mode = "transform" if st.sidebar.checkbox("Move ROIs", False) else "rect"
+try:
+    Path("tmp/").mkdir()
+except FileExistsError:
+    pass
 
-canvas_result = st_canvas(
-    fill_color=label_color,
-    stroke_width=3,
-    background_image=bg_image,
-    height=480,
-    width=480,
-    drawing_mode=mode,
-    key="color_annotation_app",
-)
-if canvas_result.json_data is not None:
-    df = pd.json_normalize(canvas_result.json_data["objects"])
-    if len(df) != 0:
-        
-        st.session_state["color_to_label"][label_color] = label
-        df["label"] = df["fill"].map(st.session_state["color_to_label"])
-        st.dataframe(df[["top", "left", "width", "height", "fill", "label"]])
+# Regular deletion of tmp files
+# Hopefully callback makes this better
+now = time.time()
+N_HOURS_BEFORE_DELETION = 1
+for f in Path("tmp/").glob("*.png"):
+    st.write(f, os.stat(f).st_mtime, now)
+    if os.stat(f).st_mtime < now - N_HOURS_BEFORE_DELETION * 3600:
+        Path.unlink(f)
 
-with st.expander("Color to label mapping"):
-    st.json(st.session_state["color_to_label"])
+if st.session_state["button_id"] == "":
+    st.session_state["button_id"] = re.sub(
+        "\d+", "", str(uuid.uuid4()).replace("-", "")
+    )
+
+button_id = st.session_state["button_id"]
+file_path = f"tmp/{button_id}.png"
+
+# custom_css = f""" 
+#     <style>
+#         #{button_id} {{
+#             display: inline-flex;
+#             align-items: center;
+#             justify-content: center;
+#             background-color: rgb(255, 255, 255);
+#             color: rgb(38, 39, 48);
+#             padding: .25rem .75rem;
+#             position: relative;
+#             text-decoration: none;
+#             border-radius: 4px;
+#             border-width: 1px;
+#             border-style: solid;
+#             border-color: rgb(230, 234, 241);
+#             border-image: initial;
+#         }} 
+#         #{button_id}:hover {{
+#             border-color: rgb(246, 51, 102);
+#             color: rgb(246, 51, 102);
+#         }}
+#         #{button_id}:active {{
+#             box-shadow: none;
+#             background-color: rgb(246, 51, 102);
+#             color: white;
+#             }}
+#     </style> """
+
+data = st_canvas(update_streamlit=False, key="png_export")
+if data is not None and data.image_data is not None:
+    img_data = data.image_data
+    im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
+    im.save(file_path, "PNG")
+
+    buffered = BytesIO()
+    im.save(buffered, format="PNG")
+    img_data = buffered.getvalue()
+    try:
+        # some strings <-> bytes conversions necessary here
+        b64 = base64.b64encode(img_data.encode()).decode()
+    except AttributeError:
+        b64 = base64.b64encode(img_data).decode()
+
+    dl_link = (
+        custom_css
+        + f'<a download="{file_path}" id="{button_id}" href="data:file/txt;base64,{b64}">Export PNG</a><br></br>'
+    )
+    st.markdown(dl_link, unsafe_allow_html=True)
