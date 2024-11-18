@@ -104,6 +104,7 @@ if (st.button("Analyse")):
         output = tf.image.resize(output, [32, 32])
         output = (255.0 - output) / 255.0
         
+        modelInput = tf.expand_dims(output, axis = 0)
         #st.caption(output)
         #st.caption(list(output.numpy()))
 
