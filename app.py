@@ -108,8 +108,8 @@ if (st.button("Analyse")):
         #st.caption(output)
         #st.caption(list(output.numpy()))
 
-        answerX, answerY = model.serve(output).numpy()
+        answer = model.serve(output).numpy()
         st.markdown(f"Optimal Position:")
-        st.markdown(f"X: {answerX}, Y: {answerY}")
+        st.markdown(f"X: {answer[0]}, Y: {answer[1]}")
 else:
     st.markdown("Draw in your room (Color in the obstacles), and press the Analyze button!")
