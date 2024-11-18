@@ -84,7 +84,7 @@ if (st.button("Analyse", type="primary")):
         st.caption(answer)
 
         star = Image.open("cross.png")
-        bg.paste(star, (int(answer[0][1] * 15) - 7, int(answer[0][1] * 15) - 7), star)
+        bg.paste(star, (np.clip(int(answer[0][0]), 0, 32) * 15 - 7, np.clip(int(answer[0][0]), 0, 32) * 15) - 7, star)
         st.image(bg)
 else:
     st.markdown("Press the Analyze button!")
