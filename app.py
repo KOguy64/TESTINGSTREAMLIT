@@ -72,6 +72,8 @@ custom_css = f"""
             color: white;
             }}
     </style> """
+model = tf.saved_model.load("model")
+
 bg = Image.open("test.png")
 bg = bg.convert("RGB")
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
@@ -100,8 +102,12 @@ if (st.button("Analyse")):
         #output = tf.cast(output * 255, tf.uint8)
         
         output = tf.image.resize(output, [32, 32])
-        output = output / 255.0
-        st.caption(output)
-        st.caption(list(output.numpy()))
+        output = (255.0 - output) / 255.0
+        
+        modelInput = tf.expand_dims(output)
+        #st.caption(output)
+        #st.caption(list(output.numpy()))
+
+        st.caption(model.serve(modelInput))
 else:
     st.caption("Didn't do something")
