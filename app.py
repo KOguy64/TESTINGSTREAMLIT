@@ -6,7 +6,6 @@ import time
 import uuid
 from io import BytesIO
 from pathlib import Path
-import tensorflow as tf
 
 import numpy as np
 import pandas as pd
@@ -14,13 +13,6 @@ import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from svgpathtools import parse_path
-
-def load_image(image_path):
-    image = tf.io.read_file(image_path)
-    image = tf.image.decode_png(image, channels = 3)
-    image = tf.image.resize(image, [32, 32])
-    image = image / 255.0
-    return image
 
 if "button_id" not in st.session_state:
         st.session_state["button_id"] = ""
@@ -79,25 +71,22 @@ custom_css = f"""
             color: white;
             }}
     </style> """
-testpath = "test.png"
-bg = Image.open(testpath)
+bg = Image.open("test.png")
 data = st_canvas(update_streamlit=True, key="png_export", height=480, width=480, background_image=bg)
 if (st.button("Analyse")):
     if data is not None and data.image_data is not None:
         img_data = data.image_data
         im = Image.fromarray(img_data.astype("uint8"), mode="RGBA")
         bg.paste(im, (0,0), im)
-        
-        buffered = BytesIO()
-        bg.save(testpath, format="PNG")
-        img_data = buffered.getvalue()
-        try:
-            # some strings <-> bytes conversions necessary here
-            b64 = base64.b64encode(img_data.encode()).decode()
-        except AttributeError:
-            b64 = base64.b64encode(img_data).decode()
-        
-        st.image(load_image(testpath)) #DISPLAY FULL IMAGE
+        # buffered = BytesIO()
+        # im.save(buffered, format="PNG")
+        # img_data = buffered.getvalue()
+        # try:
+        #     # some strings <-> bytes conversions necessary here
+        #     b64 = base64.b64encode(img_data.encode()).decode()
+        # except AttributeError:
+        #     b64 = base64.b64encode(img_data).decode()
+        st.image(bg)
     st.caption("I did something")
 else:
     st.caption("Didn't do something")
