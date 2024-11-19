@@ -80,8 +80,8 @@ if (st.button("Analyse", type="primary")):
         st.header(f"Optimal Position:")
         st.header(f"X: {answer[0][0]}")
         st.header(f"Y: {answer[0][1]}")
-        st.caption(model.serve(output).numpy())
-        st.caption(answer)
+        #st.caption(model.serve(output).numpy())
+        #st.caption(answer)
 
         star = Image.open("cross.png")
         bg.paste(star, (np.clip(int(answer[0][0]), 0, 32) * 15 - 7, np.clip(int(answer[0][1]), 0, 32) * 15 - 7), star)
